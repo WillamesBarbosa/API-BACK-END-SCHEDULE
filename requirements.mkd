@@ -1,0 +1,27 @@
+# Requerimentos
+
+## Back-end
+
+### Linguagem
+
+- NodeJs
+
+### Banco de dados
+
+]\* undefined
+
+### Tecnologias necessárias
+
+- token JWT
+- Banco de dados
+- Lib de datas
+
+### Requisitos
+
+- Login de usuários
+- Login do provedor
+- Permitir marcar consultas em horários e dias estabelecidos pelo provedor
+- Provedor poder remover consulta
+- Provedor poder adicionar consulta
+- Provedor poder remover conta de usuário
+- Não pode marcar mais de uma consulta em um mesmo horário

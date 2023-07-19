@@ -1,0 +1,4 @@
+# ignore artfacts:
+
+build
+coverage
