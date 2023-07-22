@@ -1,25 +1,26 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- Necessário para gerar UUIDs
+
 CREATE TABLE pacientes (
-    id serial PRIMARY KEY,
-    name varchar(100),
-    email varchar(100),
-    cell_phone varchar(100),
-    password varchar(100),
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nameComplete VARCHAR(100),
+    email VARCHAR(100),
+    passwordUser VARCHAR(100),
     verified boolean,
-    permission NOT NULL DEFAULT false
 );
 
-CREATE TABLE hours_and_date (
-    id serial PRIMARY KEY,
-    data_hora timestamp with time zone,
-    disponivel boolean NOT NULL DEFAULT true,
-    id_paciente integer REFERENCES pacientes(id) ON DELETE SET NULL
-    id_agent integer REFERENCES agent(id) ON DELETE SET NULL
+CREATE TABLE medico (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nome VARCHAR(100) NOT NULL,
+    especialidade VARCHAR(50) NOT NULL,
+    crm VARCHAR(20) NOT NULL,
+    telefone VARCHAR(20),
+    email VARCHAR(100)
 );
 
-CREATE TABLE agent (
-    id serial PRIMARY KEY,
-    name varchar(100),
-    identifier_number varchar(100),
-    password varchar(100),
-    permission NOT NULL DEFAULT true,
+CREATE TABLE horarios_disponiveis (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    data_hora TIMESTAMP WITH TIME ZONE,
+    disponivel BOOLEAN NOT NULL DEFAULT TRUE,
+    id_paciente UUID REFERENCES pacientes(id) ON DELETE SET NULL,
+    id_medico UUID REFERENCES medico(id) ON DELETE SET NULL
 );
