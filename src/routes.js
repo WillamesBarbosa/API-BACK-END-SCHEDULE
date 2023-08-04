@@ -4,6 +4,7 @@ const ScheduleController = require('./app/controllers/scheduleController');
 
 const router = Router();
 
-router.get('/schedules', ScheduleController.findAll);
+router.get('/schedules', ScheduleController.index);
+router.post('/schedules', ScheduleController.store);
 
 module.exports = router;
