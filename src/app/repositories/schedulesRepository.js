@@ -10,6 +10,16 @@ class SchedulesRepository {
     return rows;
   }
 
+  async findEmail(email) {
+    const emailExist = await database.query(`
+      SELECT *
+      FROM pacientes
+      WHERE email = $1
+    `, [email]);
+
+    return emailExist;
+  }
+
   async create({
     nameComplete, email, passwordUser, verified,
   }) {
