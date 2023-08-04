@@ -24,7 +24,7 @@ exports.query = async (query, values) => {
         port: 5432,
         user: 'root',
         password: 'root',
-        database: 'mycontacts',
+        database: 'myschedules',
       });
 
       await client.connect()
