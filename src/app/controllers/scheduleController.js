@@ -11,11 +11,16 @@ class ScheduleController {
     const {
       nameComplete, email, passwordUser, verified = false,
     } = request.body;
+    const emailAlreadyExists = await SchedulesRepository.findEmail(email);
+
+    if (emailAlreadyExists) {
+      return response.json({ error: 'Email já existe!' });
+    }
     const paciente = await SchedulesRepository.create({
       nameComplete, email, passwordUser, verified,
     });
 
-    response.json(paciente);
+    return response.json(paciente);
   }
 }
 
