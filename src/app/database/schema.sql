@@ -1,23 +1,26 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- Necessário para gerar UUIDs
+-- Necessário para gerar UUIDs
+CREATE DATABASE myschedules;
 
-CREATE TABLE pacientes (
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS pacientes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    nameComplete VARCHAR(100),
-    email VARCHAR(100),
-    passwordUser VARCHAR(100),
-    verified boolean,
+    nameComplete VARCHAR,
+    email VARCHAR,
+    passwordUser VARCHAR,
+    verified boolean
 );
 
-CREATE TABLE medico (
+CREATE TABLE IF NOT EXISTS medico (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR NOT NULL,
     especialidade VARCHAR(50) NOT NULL,
     crm VARCHAR(20) NOT NULL,
     telefone VARCHAR(20),
-    email VARCHAR(100)
+    email VARCHAR
 );
 
-CREATE TABLE horarios_disponiveis (
+CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     data_hora TIMESTAMP WITH TIME ZONE,
     disponivel BOOLEAN NOT NULL DEFAULT TRUE,
