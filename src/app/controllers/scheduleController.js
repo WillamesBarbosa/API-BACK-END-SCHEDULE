@@ -6,6 +6,17 @@ class ScheduleController {
 
     response.json(schedules);
   }
+
+  async store(request, response) {
+    const {
+      nameComplete, email, passwordUser, verified = false,
+    } = request.body;
+    const paciente = await SchedulesRepository.create({
+      nameComplete, email, passwordUser, verified,
+    });
+
+    response.json(paciente);
+  }
 }
 
 module.exports = new ScheduleController();
