@@ -11,13 +11,23 @@ class SchedulesRepository {
   }
 
   async findEmail(email) {
-    const emailExist = await database.query(`
+    const [emailExist] = await database.query(`
       SELECT *
       FROM pacientes
       WHERE email = $1
     `, [email]);
 
     return emailExist;
+  }
+
+  async findId(id) {
+    const [idExist] = await database.query(`
+    SELECT *
+    FROM pacientes
+    WHERE id = $1
+    `, [id]);
+
+    return idExist;
   }
 
   async create({
@@ -30,6 +40,15 @@ class SchedulesRepository {
     `, [nameComplete, email, passwordUser, verified]);
 
     return row;
+  }
+
+  async delete(id) {
+    const dlt = await database.query(`
+    DELETE FROM pacientes
+    WHERE id = $1
+    `, [id]);
+
+    return dlt;
   }
 }
 
