@@ -24,6 +24,36 @@ class ScheduleController {
     return response.json({ error: 'Email já existe!' });
   }
 
+  async update(request, response) {
+    const {
+      nameComplete, email, passwordUser, verified = false,
+    } = request.body;
+    const { id } = request.params;
+
+    console.log(request.body);
+
+    const userExist = await SchedulesRepository.findId(id);
+
+    if (!userExist) {
+      return response.json({ error: 'Usuário não existe!' });
+    }
+
+    const paciente = await SchedulesRepository.update(
+      id,
+      {
+        nameComplete,
+
+        email,
+
+        passwordUser,
+
+        verified,
+      },
+    );
+
+    return response.json(paciente);
+  }
+
   async delete(request, response) {
     const { id } = request.params;
 
