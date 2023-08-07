@@ -42,6 +42,26 @@ class SchedulesRepository {
     return row;
   }
 
+  async update(
+    id,
+    {
+      nameComplete,
+      email,
+      passwordUser,
+      verified,
+    },
+  ) {
+    console.log(nameComplete);
+    const [row] = await database.query(`
+    UPDATE pacientes
+    SET nameComplete = $1, email = $2, passwordUser = $3, verified = $4
+    WHERE id = $5
+    RETURNING *
+    `, [nameComplete, email, passwordUser, verified, id]);
+
+    return row;
+  }
+
   async delete(id) {
     const dlt = await database.query(`
     DELETE FROM pacientes
