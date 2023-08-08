@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const SchedulesRepository = require('../repositories/schedulesRepository');
 
 class ScheduleController {
@@ -18,15 +20,33 @@ class ScheduleController {
     return response.json(user);
   }
 
+  async login(request, response) {
+    const { email, passwordUser } = request.body;
+
+    const user = await SchedulesRepository.findEmail(email);
+
+    if (!user) {
+      return response.json({ error: 'Email não existe!' });
+    }
+    const passwordAuth = await bcrypt.compareSync(passwordUser, user.passworduser);
+
+    if (!passwordAuth) {
+      return response.json({ error: 'Senha incorreta!' });
+    }
+    return response.json(user);
+  }
+
   async store(request, response) {
     const {
       nameComplete, email, passwordUser, verified = false,
     } = request.body;
     const emailAlreadyExists = await SchedulesRepository.findEmail(email);
 
+    const passwordHash = bcrypt.hashSync(passwordUser, 15);
+
     if (!emailAlreadyExists) {
       const paciente = await SchedulesRepository.create({
-        nameComplete, email, passwordUser, verified,
+        nameComplete, email, passwordHash, verified,
       });
 
       return response.json(paciente);
