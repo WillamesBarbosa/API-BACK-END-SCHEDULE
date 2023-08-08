@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const SchedulesRepository = require('../repositories/usersRepository');
 
@@ -34,7 +36,8 @@ class ScheduleController {
       return response.status(401).json({ error: 'Senha incorreta!' });
     }
 
-    return response.json(user);
+    const token = await jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: 120 });
+    return response.json(token);
   }
 
   async store(request, response) {
