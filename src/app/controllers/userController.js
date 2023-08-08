@@ -14,7 +14,7 @@ class ScheduleController {
     const user = await SchedulesRepository.findId(id);
 
     if (!user) {
-      return response.json({ error: 'Usuário não existe' });
+      return response.status(404).json({ error: 'Usuário não existe' });
     }
 
     return response.json(user);
@@ -26,13 +26,14 @@ class ScheduleController {
     const user = await SchedulesRepository.findEmail(email);
 
     if (!user) {
-      return response.json({ error: 'Email não existe!' });
+      return response.status(404).json({ error: 'Email não existe!' });
     }
     const passwordAuth = await bcrypt.compareSync(passwordUser, user.passworduser);
 
     if (!passwordAuth) {
-      return response.json({ error: 'Senha incorreta!' });
+      return response.status(401).json({ error: 'Senha incorreta!' });
     }
+
     return response.json(user);
   }
 
@@ -52,7 +53,7 @@ class ScheduleController {
       return response.json(paciente);
     }
 
-    return response.json({ error: 'Email já existe!' });
+    return response.status(409).json({ error: 'Email já existe!' });
   }
 
   async update(request, response) {
@@ -66,7 +67,7 @@ class ScheduleController {
     const userExist = await SchedulesRepository.findId(id);
 
     if (!userExist) {
-      return response.json({ error: 'Usuário não existe!' });
+      return response.status(404).json({ error: 'Usuário não existe!' });
     }
 
     const paciente = await SchedulesRepository.update(
