@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { Client } = require('pg');
 
 let client;
@@ -20,11 +22,11 @@ exports.query = async (query, values) => {
   try {
     if(!client){
       client = new Client({
-        host: 'localhost',
-        port: 5432,
-        user: 'root',
-        password: 'root',
-        database: 'myschedules',
+        host: process.env.HOST,
+        port: process.env.PORT,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
       });
 
       await client.connect()
