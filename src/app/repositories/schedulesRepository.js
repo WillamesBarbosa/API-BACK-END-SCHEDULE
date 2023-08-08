@@ -31,13 +31,13 @@ class SchedulesRepository {
   }
 
   async create({
-    nameComplete, email, passwordUser, verified,
+    nameComplete, email, passwordHash, verified,
   }) {
     const [row] = await database.query(`
     INSERT INTO pacientes(nameComplete, email, passwordUser, verified)
     VALUES($1, $2, $3, $4)
     RETURNING *
-    `, [nameComplete, email, passwordUser, verified]);
+    `, [nameComplete, email, passwordHash, verified]);
 
     return row;
   }
