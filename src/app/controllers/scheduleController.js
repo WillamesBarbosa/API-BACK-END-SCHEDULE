@@ -7,6 +7,17 @@ class ScheduleController {
     response.json(schedules);
   }
 
+  async show(request, response) {
+    const { id } = request.params;
+    const user = await SchedulesRepository.findId(id);
+
+    if (!user) {
+      return response.json({ error: 'Usuário não existe' });
+    }
+
+    return response.json(user);
+  }
+
   async store(request, response) {
     const {
       nameComplete, email, passwordUser, verified = false,
