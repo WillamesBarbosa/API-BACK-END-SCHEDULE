@@ -4,11 +4,11 @@ const ScheduleController = require('./app/controllers/userController');
 
 const router = Router();
 
-router.get('/schedules', ScheduleController.index);
-router.get('/schedules/:id', ScheduleController.show);
-router.post('/schedules', ScheduleController.store);
-router.post('/schedules/login', ScheduleController.login);
-router.delete('/schedules/:id', ScheduleController.delete);
-router.put('/schedules/:id', ScheduleController.update);
+router.get('/users', ScheduleController.index);
+router.get('/users/:id', ScheduleController.show);
+router.post('/users', ScheduleController.store);
+router.post('/users/login', ScheduleController.login);
+router.delete('/users/:id', ScheduleController.delete);
+router.put('/users/:id', ScheduleController.update);
 
 module.exports = router;
