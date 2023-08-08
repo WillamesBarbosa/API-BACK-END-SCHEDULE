@@ -1,6 +1,6 @@
 const Router = require('express');
 
-const ScheduleController = require('./app/controllers/scheduleController');
+const ScheduleController = require('./app/controllers/userController');
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const SchedulesRepository = require('../repositories/schedulesRepository');
+const SchedulesRepository = require('../repositories/usersRepository');
 
 class ScheduleController {
   async index(request, response) {
