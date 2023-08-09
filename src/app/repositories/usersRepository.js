@@ -1,6 +1,6 @@
 const database = require('../../database/index');
 
-class SchedulesRepository {
+class UsersRepository {
   async findAll() {
     const rows = await database.query(`
     SELECT *
@@ -72,4 +72,4 @@ class SchedulesRepository {
   }
 }
 
-module.exports = new SchedulesRepository();
+module.exports = new UsersRepository();

@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const SchedulesRepository = require('../repositories/usersRepository');
+const UsersRepository = require('../repositories/usersRepository');
 
-class ScheduleController {
+class UserController {
   async index(request, response) {
     try {
-      const schedules = await SchedulesRepository.findAll();
+      const schedules = await UsersRepository.findAll();
 
       return response.json(schedules);
     } catch (error) {
@@ -18,7 +18,7 @@ class ScheduleController {
   async show(request, response) {
     try {
       const { id } = request;
-      const user = await SchedulesRepository.findId(id);
+      const user = await UsersRepository.findId(id);
 
       if (!user) {
         return response.status(404).json({ Error: 'Usuário não existe' });
@@ -34,7 +34,7 @@ class ScheduleController {
     try {
       const { email, passwordUser } = request.body;
 
-      const user = await SchedulesRepository.findEmail(email);
+      const user = await UsersRepository.findEmail(email);
 
       if (!user) {
         return response.status(404).json({ error: 'Email não existe!' });
@@ -58,12 +58,12 @@ class ScheduleController {
         nameComplete, email, passwordUser, verified = false,
       } = request.body;
 
-      const emailAlreadyExists = await SchedulesRepository.findEmail(email);
+      const emailAlreadyExists = await UsersRepository.findEmail(email);
 
       const passwordHash = await bcrypt.hash(passwordUser, 15);
 
       if (!emailAlreadyExists) {
-        const paciente = await SchedulesRepository.create({
+        const paciente = await UsersRepository.create({
           nameComplete, email, passwordHash, verified,
         });
 
@@ -83,13 +83,13 @@ class ScheduleController {
       } = request.body;
       const { id } = request;
 
-      const userExist = await SchedulesRepository.findId(id);
+      const userExist = await UsersRepository.findId(id);
 
       if (!userExist) {
         return response.status(404).json({ error: 'Usuário não existe!' });
       }
 
-      const paciente = await SchedulesRepository.update(
+      const paciente = await UsersRepository.update(
         id,
         {
           nameComplete,
@@ -112,13 +112,13 @@ class ScheduleController {
     try {
       const { id } = request;
 
-      const idExist = await SchedulesRepository.delete(id);
+      const idExist = await UsersRepository.delete(id);
 
       if (!idExist) {
         return response.status(404).json({ Error: 'Usuário não existe' });
       }
 
-      await SchedulesRepository.delete(id);
+      await UsersRepository.delete(id);
       return response.sendStatus(204);
     } catch (error) {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
@@ -126,4 +126,4 @@ class ScheduleController {
   }
 }
 
-module.exports = new ScheduleController();
+module.exports = new UserController();
