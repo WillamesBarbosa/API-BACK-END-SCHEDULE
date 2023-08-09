@@ -12,7 +12,7 @@ class ScheduleController {
   }
 
   async show(request, response) {
-    const { id } = request.params;
+    const { id } = request;
     const user = await SchedulesRepository.findId(id);
 
     if (!user) {
@@ -36,7 +36,7 @@ class ScheduleController {
       return response.status(401).json({ error: 'Senha incorreta!' });
     }
 
-    const token = await jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: 120 });
+    const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: 120 });
     return response.json(token);
   }
 
@@ -44,9 +44,10 @@ class ScheduleController {
     const {
       nameComplete, email, passwordUser, verified = false,
     } = request.body;
+
     const emailAlreadyExists = await SchedulesRepository.findEmail(email);
 
-    const passwordHash = bcrypt.hashSync(passwordUser, 15);
+    const passwordHash = await bcrypt.hash(passwordUser, 15);
 
     if (!emailAlreadyExists) {
       const paciente = await SchedulesRepository.create({
@@ -63,7 +64,7 @@ class ScheduleController {
     const {
       nameComplete, email, passwordUser, verified = false,
     } = request.body;
-    const { id } = request.params;
+    const { id } = request;
 
     console.log(request.body);
 
@@ -90,7 +91,7 @@ class ScheduleController {
   }
 
   async delete(request, response) {
-    const { id } = request.params;
+    const { id } = request;
 
     const idExist = await SchedulesRepository.delete(id);
 
