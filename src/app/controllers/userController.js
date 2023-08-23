@@ -7,9 +7,9 @@ const UsersRepository = require('../repositories/usersRepository');
 class UserController {
   async index(request, response) {
     try {
-      const schedules = await UsersRepository.findAll();
+      const users = await UsersRepository.findAll();
 
-      return response.json(schedules);
+      return response.json(users);
     } catch (error) {
       return response.status(500).json('Ocorreu um erro interno no servidor');
     }
@@ -55,7 +55,7 @@ class UserController {
   async store(request, response) {
     try {
       const {
-        nameComplete, email, passwordUser, verified = false,
+        nameComplete, email, passwordUser, verified = false, authLevel = 0,
       } = request.body;
 
       const emailAlreadyExists = await UsersRepository.findEmail(email);
@@ -64,7 +64,7 @@ class UserController {
 
       if (!emailAlreadyExists) {
         const paciente = await UsersRepository.create({
-          nameComplete, email, passwordHash, verified,
+          nameComplete, email, passwordHash, verified, authLevel,
         });
 
         return response.json(paciente);
