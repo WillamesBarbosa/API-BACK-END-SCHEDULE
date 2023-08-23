@@ -31,13 +31,13 @@ class UsersRepository {
   }
 
   async create({
-    nameComplete, email, passwordHash, verified,
+    nameComplete, email, passwordHash, verified, authLevel,
   }) {
     const [row] = await database.query(`
-    INSERT INTO pacientes(nameComplete, email, passwordUser, verified)
-    VALUES($1, $2, $3, $4)
+    INSERT INTO pacientes(nameComplete, email, passwordUser, verified, authLevel)
+    VALUES($1, $2, $3, $4, $5)
     RETURNING *
-    `, [nameComplete, email, passwordHash, verified]);
+    `, [nameComplete, email, passwordHash, verified, authLevel]);
 
     return row;
   }
