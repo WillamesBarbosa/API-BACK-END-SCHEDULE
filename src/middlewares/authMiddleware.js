@@ -13,7 +13,7 @@ async function authorizationMiddleware(request, response, next) {
     request.id = decode.id;
     next();
   } catch (error) {
-    throw new Error('Erro ao decodificar o token')
+    response.status(401).json({Erro: 'Usuário não autorizado'})
   }
 }
 
