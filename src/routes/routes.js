@@ -12,7 +12,7 @@ router.use(authorizationMiddleware);
 
 router.get('/users', userController.index);
 router.get('/user', userController.show);
-router.delete('/user/:id', userController.delete);
-router.put('/user/:id', userController.update);
+router.delete('/user', userController.delete);
+router.put('/user', userController.update);
 
 module.exports = router;
