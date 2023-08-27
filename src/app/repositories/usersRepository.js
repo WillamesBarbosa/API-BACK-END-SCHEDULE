@@ -10,26 +10,6 @@ class UsersRepository {
     return rows;
   }
 
-  async findEmail(email) {
-    const [row] = await database.query(`
-      SELECT *
-      FROM pacientes
-      WHERE email = $1
-    `, [email]);
-
-    return row;
-  }
-
-  async findId(id) {
-    const [row] = await database.query(`
-    SELECT *
-    FROM pacientes
-    WHERE id = $1
-    `, [id]);
-
-    return row;
-  }
-
   async create({
     nameComplete, email, passwordHash, verified, authLevel,
   }) {
