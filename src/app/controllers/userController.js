@@ -55,7 +55,7 @@ class UserController {
   async store(request, response) {
     try {
       const {
-        nameComplete, email, passwordUser, verified = false, authLevel = 0,
+        nameComplete, email, passwordUser,
       } = request.body;
 
       const emailAlreadyExists = await UsersRepository.findEmail(email);
@@ -64,7 +64,7 @@ class UserController {
 
       if (!emailAlreadyExists) {
         const paciente = await UsersRepository.create({
-          nameComplete, email, passwordHash, verified, authLevel,
+          nameComplete, email, passwordHash, verified: false, authLevel: 0,
         });
 
         return response.json(paciente);
