@@ -18,8 +18,9 @@ CREATE TABLE IF NOT EXISTS medico (
     especialidade VARCHAR(50) NOT NULL,
     crm VARCHAR(20) NOT NULL,
     telefone VARCHAR(20),
-    email VARCHAR
-    authLevel smallint
+    email VARCHAR,
+    authLevel smallint,
+    passwordDoctor VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
