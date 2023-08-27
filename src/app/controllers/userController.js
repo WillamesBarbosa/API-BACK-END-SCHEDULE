@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const UsersRepository = require('../repositories/usersRepository');
 
+const { findByField } = require('../services/findByFieldService');
 const { verifyAllParameters } = require('../services/parametersValidationService');
 
 class UserController {
@@ -20,7 +21,7 @@ class UserController {
   async show(request, response) {
     try {
       const { id } = request;
-      const user = await UsersRepository.findId(id);
+      const user = await findByField(process.env.USER_TABLE, id);
 
       if (!user) {
         return response.status(404).json({ Error: 'Usuário não existe' });
@@ -36,7 +37,7 @@ class UserController {
     try {
       const { email, passwordUser } = request.body;
 
-      const user = await UsersRepository.findEmail(email);
+      const user = await findByField(process.env.USER_TABLE, email);
 
       if (!user) {
         return response.status(404).json({ error: 'Email não existe!' });
@@ -64,7 +65,7 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
-      const emailAlreadyExists = await UsersRepository.findEmail(email);
+      const emailAlreadyExists = await findByField(process.env.USER_TABLE, email);
 
       const passwordHash = await bcrypt.hash(passwordUser, 15);
 
@@ -93,7 +94,7 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
-      const userExist = await UsersRepository.findId(id);
+      const userExist = await findByField(process.env.USER_TABLE, id);
 
       if (!userExist) {
         return response.status(404).json({ error: 'Usuário não existe!' });
@@ -120,7 +121,7 @@ class UserController {
     try {
       const { id } = request;
 
-      const idExist = await UsersRepository.delete(id);
+      const idExist = await findByField(process.env.USER_TABLE, id);
 
       if (!idExist) {
         return response.status(404).json({ Error: 'Usuário não existe' });
