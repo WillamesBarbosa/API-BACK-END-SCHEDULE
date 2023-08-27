@@ -85,9 +85,13 @@ class UserController {
   async update(request, response) {
     try {
       const {
-        nameComplete, email, passwordUser, verified = false,
+        nameComplete, email, passwordUser,
       } = request.body;
       const { id } = request;
+
+      if (verifyAllParameters(nameComplete, email, passwordUser)) {
+        return response.status(400).json({ error: 'bad request' });
+      }
 
       const userExist = await UsersRepository.findId(id);
 
@@ -103,8 +107,6 @@ class UserController {
           email,
 
           passwordUser,
-
-          verified,
         },
       );
 
