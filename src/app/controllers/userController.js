@@ -21,7 +21,7 @@ class UserController {
   async show(request, response) {
     try {
       const { id } = request;
-      const user = await findByField(process.env.USER_TABLE, id);
+      const user = await findByField(process.env.USER_TABLE, process.env.USER_IDENTIFICATION, id);
 
       if (!user) {
         return response.status(404).json({ Error: 'Usuário não existe' });
@@ -37,7 +37,7 @@ class UserController {
     try {
       const { email, passwordUser } = request.body;
 
-      const user = await findByField(process.env.USER_TABLE, email);
+      const user = await findByField(process.env.USER_TABLE, process.env.USER_EMAIL, email);
 
       if (!user) {
         return response.status(404).json({ error: 'Email não existe!' });
@@ -65,7 +65,11 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
-      const emailAlreadyExists = await findByField(process.env.USER_TABLE, email);
+      const emailAlreadyExists = await findByField(
+        process.env.USER_TABLE,
+        process.env.USER_EMAIL,
+        email,
+      );
 
       const passwordHash = await bcrypt.hash(passwordUser, 15);
 
@@ -94,7 +98,11 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
-      const userExist = await findByField(process.env.USER_TABLE, id);
+      const userExist = await findByField(
+        process.env.USER_TABLE,
+        process.env.USER_IDENTIFICATION,
+        id,
+      );
 
       if (!userExist) {
         return response.status(404).json({ error: 'Usuário não existe!' });
@@ -121,7 +129,11 @@ class UserController {
     try {
       const { id } = request;
 
-      const idExist = await findByField(process.env.USER_TABLE, id);
+      const idExist = await findByField(
+        process.env.USER_TABLE,
+        process.env.USER_IDENTIFICATION,
+        id,
+      );
 
       if (!idExist) {
         return response.status(404).json({ Error: 'Usuário não existe' });
