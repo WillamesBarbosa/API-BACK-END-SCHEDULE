@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/login', userController.login);
 router.post('/user', userController.store);
-router.post('/doctor', doctorController.create);
+router.post('/doctor', doctorController.store);
 
 router.use(authorizationMiddleware);
 
