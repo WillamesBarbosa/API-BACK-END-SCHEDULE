@@ -1,12 +1,12 @@
 const database = require('../../database/index');
 
 class FindByField {
-  async findByField(table, field) {
+  async findByField(table, field, value) {
     const [row] = await database.query(`
         SELECT *
         FROM ${table}
         WHERE ${field} = $1
-      `, [field]);
+      `, [value]);
 
     return row;
   }
