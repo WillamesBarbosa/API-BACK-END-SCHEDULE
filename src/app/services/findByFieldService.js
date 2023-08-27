@@ -1,7 +1,7 @@
 const FindByField = require('../repositories/findByFieldsRepository');
 
 async function findByField(table, field) {
-  const data = FindByField.findByField(table, field);
+  const data = await FindByField.findByField(table, field);
 
   return data;
 }
