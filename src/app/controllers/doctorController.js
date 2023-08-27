@@ -1,5 +1,7 @@
 const DoctorsRepository = require('../repositories/doctorsRepository');
 
+const { verifyAllParameters } = require('../services/parametersValidationService');
+
 class DoctorController {
   async store(request, response) {
     const {
@@ -8,7 +10,12 @@ class DoctorController {
       crm,
       telefone,
       email,
+      passwordDoctor,
     } = request.body;
+
+    if (verifyAllParameters(nome, especialidade, crm, telefone, email, passwordDoctor)) {
+      return response.status(401).json({ error: 'bad request' });
+    }
 
     const doctor = DoctorsRepository.create({
       nome,
@@ -16,10 +23,11 @@ class DoctorController {
       crm,
       telefone,
       email,
+      passwordDoctor,
       authLevel: 1,
     });
 
-    response.json(doctor);
+    return response.json(doctor);
   }
 }
 
