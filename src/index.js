@@ -4,6 +4,7 @@ const https = require('https');
 const cors = require('cors');
 
 const routes = require('./routes/routes');
+const { checkIntegrityOfJSON } = require('./middlewares/jsonErrorMiddleware');
 
 const textInitialWhenConnect = `
 -----------------------------------------------
@@ -19,6 +20,10 @@ const textInitialWhenConnect = `
 const app = express();
 // For convert JSON on Js Object
 app.use(express.json());
+
+// check if the json strutucture is correct
+app.use(checkIntegrityOfJSON);
+
 // For minimize erros about cors
 app.use(cors());
 app.use(routes);
