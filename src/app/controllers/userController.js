@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const UsersRepository = require('../repositories/usersRepository');
 
+const { verifyAllParameters } = require('../services/parametersValidationService');
+
 class UserController {
   async index(request, response) {
     try {
@@ -57,6 +59,10 @@ class UserController {
       const {
         nameComplete, email, passwordUser,
       } = request.body;
+
+      if (verifyAllParameters(nameComplete, email, passwordUser)) {
+        return response.status(400).json({ error: 'bad request' });
+      }
 
       const emailAlreadyExists = await UsersRepository.findEmail(email);
 
