@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-async function authorizationService(token, SECRET) {
+async function authenticationService(token, SECRET) {
   try {
     const decode = await jwt.verify(token, SECRET);
 
@@ -12,5 +12,5 @@ async function authorizationService(token, SECRET) {
 }
 
 module.exports = {
-  authorizationService,
+  authenticationService,
 };

@@ -1,12 +1,12 @@
 require('dotenv').config();
 
-const { authorizationService } = require('../app/services/authService');
+const { authenticationService } = require('../app/services/authenticationService');
 
 /* eslint-disable */
-async function authorizationMiddleware(request, response, next) {
+async function authenticationMiddleware(request, response, next) {
   const token = request.headers.authorization;
   try {
-    const decode = await authorizationService(token, process.env.SECRET);
+    const decode = await authenticationService(token, process.env.SECRET);
     if (!decode) {
       return response.status(501);
     }
@@ -18,5 +18,5 @@ async function authorizationMiddleware(request, response, next) {
 }
 
 module.exports = {
-  authorizationMiddleware,
+  authenticationMiddleware,
 };
