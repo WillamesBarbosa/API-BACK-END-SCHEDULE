@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const UsersRepository = require('../repositories/usersRepository');
 
 const { findByField } = require('../services/findByFieldService');
 const { verifyAllParameters } = require('../services/parametersValidationService');
+const { tokenGenerator } = require('../services/tokenService');
 
 class UserController {
   async index(request, response) {
@@ -21,7 +21,7 @@ class UserController {
   async show(request, response) {
     try {
       const { id } = request;
-      const user = await findByField(process.env.USER_TABLE, process.env.USER_IDENTIFICATION, id);
+      const user = await findByField(process.env.USER_TABLE, process.env.FIELD_IDENTIFICATION, id);
 
       if (!user) {
         return response.status(404).json({ Error: 'Usuário não existe' });
@@ -37,18 +37,12 @@ class UserController {
     try {
       const { email, passwordUser } = request.body;
 
-      const user = await findByField(process.env.USER_TABLE, process.env.USER_EMAIL, email);
+      const token = await tokenGenerator(email, passwordUser);
 
-      if (!user) {
-        return response.status(404).json({ error: 'Email não existe!' });
-      }
-      const passwordAuth = await bcrypt.compareSync(passwordUser, user.passworduser);
-
-      if (!passwordAuth) {
-        return response.status(401).json({ error: 'Senha incorreta!' });
+      if (!token) {
+        response.status(401).json({ erro: 'Email ou senha incorretos' });
       }
 
-      const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: 120 });
       return response.json(token);
     } catch (error) {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
