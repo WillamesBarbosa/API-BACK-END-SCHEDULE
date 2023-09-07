@@ -40,7 +40,7 @@ class UserController {
       const token = await tokenGenerator(email, password);
 
       if (!token) {
-        response.status(401).json({ erro: 'Email ou senha incorretos' });
+        return response.status(401).json({ erro: 'Email ou senha incorretos' });
       }
 
       return response.json(token);
