@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt');
+
+require('dotenv').config();
+
 const DoctorsRepository = require('../repositories/doctorsRepository');
 
 const { verifyAllParameters } = require('../services/parametersValidationService');
@@ -9,7 +13,7 @@ class DoctorController {
     const {
       full_name,
       email,
-      password_hash,
+      password,
       street_address,
       city,
       state_province,
@@ -20,7 +24,7 @@ class DoctorController {
     if (verifyAllParameters(
       full_name,
       street_address,
-      password_hash,
+      password,
       email,
       city,
       state_province,
@@ -48,6 +52,8 @@ class DoctorController {
     if (crmAlreadyExist || emailAlreadyExist) {
       return response.status(409).json({ erro: 'Email ou CRM já existe' });
     }
+
+    const password_hash = await bcrypt.hash(password, 15);
 
     const doctor = await DoctorsRepository.create({
       full_name,
