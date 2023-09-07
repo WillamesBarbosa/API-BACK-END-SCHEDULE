@@ -4,13 +4,13 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 const { findByField } = require('./findByFieldService');
 
-async function tokenGenerator(email, passwordUser) {
+async function tokenGenerator(email, password) {
   try {
     const patient = await findByField(process.env.USER_TABLE, process.env.FIELD_EMAIL, email);
 
     if (patient) {
     // return response.status(404).json({ error: 'Email não existe!' });
-      const passwordAuth = await bcrypt.compareSync(passwordUser, patient.passworduser);
+      const passwordAuth = await bcrypt.compareSync(password, patient.password_hash);
       if (!passwordAuth) {
         return false;
       }
@@ -28,7 +28,7 @@ async function tokenGenerator(email, passwordUser) {
     const medic = await findByField(process.env.DOCTOR_TABLE, process.env.FIELD_EMAIL, email);
 
     if (medic) {
-      const passwordAuth = await bcrypt.compareSync(passwordUser, medic.passworddoctor);
+      const passwordAuth = await bcrypt.compareSync(password, medic.password_hash);
 
       if (!passwordAuth) {
         return false;
