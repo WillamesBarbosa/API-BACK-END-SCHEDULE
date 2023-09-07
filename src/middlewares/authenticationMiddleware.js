@@ -11,6 +11,7 @@ async function authenticationMiddleware(request, response, next) {
       return response.status(501);
     }
     request.id = decode.id;
+    request.authorization_level = decode.authorization_level;
     next();
   } catch (error) {
     response.status(401).json({Erro: 'Usuário não autorizado'})
