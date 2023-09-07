@@ -17,7 +17,7 @@ async function tokenGenerator(email, password) {
       const token = await jwt.sign(
         {
           id: patient.id,
-          authLevel: patient.authlevel,
+          authorization_level: patient.authorization_level,
         },
         process.env.SECRET,
         { expiresIn: 120 },
@@ -36,7 +36,7 @@ async function tokenGenerator(email, password) {
       const token = await jwt.sign(
         {
           id: medic.id,
-          authLevel: medic.authlevel,
+          authLevel: medic.authorization_level,
         },
         process.env.SECRET,
         { expiresIn: 120 },
