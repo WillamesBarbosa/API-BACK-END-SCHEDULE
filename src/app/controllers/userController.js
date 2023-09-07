@@ -35,9 +35,9 @@ class UserController {
 
   async login(request, response) {
     try {
-      const { email, passwordUser } = request.body;
+      const { email, password } = request.body;
 
-      const token = await tokenGenerator(email, passwordUser);
+      const token = await tokenGenerator(email, password);
 
       if (!token) {
         response.status(401).json({ erro: 'Email ou senha incorretos' });
@@ -52,24 +52,32 @@ class UserController {
   async store(request, response) {
     try {
       const {
-        nameComplete, email, passwordUser,
+        full_name, email, password, street_address, city, state_province, mobile_number,
       } = request.body;
 
-      if (verifyAllParameters(nameComplete, email, passwordUser)) {
+      if (verifyAllParameters(
+        full_name,
+        email,
+        password,
+        street_address,
+        city,
+        state_province,
+        mobile_number,
+      )) {
         return response.status(400).json({ error: 'bad request' });
       }
 
       const emailAlreadyExists = await findByField(
         process.env.USER_TABLE,
-        process.env.USER_EMAIL,
+        process.env.FIELD_EMAIL,
         email,
       );
 
-      const passwordHash = await bcrypt.hash(passwordUser, 15);
+      const password_hash = await bcrypt.hash(password, 15);
 
       if (!emailAlreadyExists) {
         const paciente = await UsersRepository.create({
-          nameComplete, email, passwordHash, verified: false, authLevel: 0,
+          full_name, email, password_hash, street_address, city, state_province, mobile_number,
         });
 
         return response.json(paciente);
@@ -84,17 +92,25 @@ class UserController {
   async update(request, response) {
     try {
       const {
-        nameComplete, email, passwordUser,
+        full_name, email, password, street_address, city, state_province, mobile_number,
       } = request.body;
       const { id } = request;
 
-      if (verifyAllParameters(nameComplete, email, passwordUser)) {
+      if (verifyAllParameters(
+        full_name,
+        email,
+        password,
+        street_address,
+        city,
+        state_province,
+        mobile_number,
+      )) {
         return response.status(400).json({ error: 'bad request' });
       }
 
       const userExist = await findByField(
         process.env.USER_TABLE,
-        process.env.USER_IDENTIFICATION,
+        process.env.FIELD_IDENTIFICATION,
         id,
       );
 
@@ -102,18 +118,14 @@ class UserController {
         return response.status(404).json({ error: 'Usuário não existe!' });
       }
 
-      const paciente = await UsersRepository.update(
+      const patient = await UsersRepository.update(
         id,
         {
-          nameComplete,
-
-          email,
-
-          passwordUser,
+          full_name, email, password, street_address, city, state_province, mobile_number,
         },
       );
 
-      return response.json(paciente);
+      return response.json(patient);
     } catch (error) {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
@@ -125,7 +137,7 @@ class UserController {
 
       const idExist = await findByField(
         process.env.USER_TABLE,
-        process.env.USER_IDENTIFICATION,
+        process.env.FIELD_IDENTIFICATION,
         id,
       );
 

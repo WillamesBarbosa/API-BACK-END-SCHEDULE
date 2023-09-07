@@ -4,20 +4,21 @@ class UsersRepository {
   async findAll() {
     const rows = await database.query(`
     SELECT *
-    FROM pacientes
+    FROM patient
     `);
 
     return rows;
   }
 
   async create({
-    nameComplete, email, passwordHash, verified, authLevel,
+    full_name, email, password_hash, street_address, city, state_province, mobile_number,
   }) {
+    console.log('chegou aqui');
     const [row] = await database.query(`
-    INSERT INTO pacientes(nameComplete, email, passwordUser, verified, authLevel)
-    VALUES($1, $2, $3, $4, $5)
+    INSERT INTO patient(full_name, email, password_hash, street_address, city, state_province, mobile_number)
+    VALUES($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
-    `, [nameComplete, email, passwordHash, verified, authLevel]);
+    `, [full_name, email, password_hash, street_address, city, state_province, mobile_number]);
 
     return row;
   }
@@ -25,26 +26,22 @@ class UsersRepository {
   async update(
     id,
     {
-      nameComplete,
-      email,
-      passwordUser,
-      verified,
+      full_name, email, password, street_address, city, state_province, mobile_number,
     },
   ) {
-    console.log(nameComplete);
     const [row] = await database.query(`
-    UPDATE pacientes
-    SET nameComplete = $1, email = $2, passwordUser = $3, verified = $4
-    WHERE id = $5
+    UPDATE patient
+    SET full_name = $1, email = $2, password_hash = $3, street_address = $4, city = $5, state_province = $6, mobile_number = $7
+    WHERE id = $8
     RETURNING *
-    `, [nameComplete, email, passwordUser, verified, id]);
+    `, [full_name, email, password, street_address, city, state_province, mobile_number, id]);
 
     return row;
   }
 
   async delete(id) {
     const dlt = await database.query(`
-    DELETE FROM pacientes
+    DELETE FROM patient
     WHERE id = $1
     `, [id]);
 
