@@ -36,7 +36,7 @@ async function tokenGenerator(email, password) {
       const token = await jwt.sign(
         {
           id: medic.id,
-          authLevel: medic.authorization_level,
+          authorization_level: medic.authorization_level,
         },
         process.env.SECRET,
         { expiresIn: 120 },
