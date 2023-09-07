@@ -15,6 +15,13 @@ class DoctorController {
     return response.send(medics);
   }
 
+  async show(request, response) {
+    const { id } = request;
+    const medic = await findByField(process.env.DOCTOR_TABLE, process.env.FIELD_IDENTIFICATION, id);
+
+    return response.send(medic);
+  }
+
   async store(request, response) {
     const {
       full_name,
