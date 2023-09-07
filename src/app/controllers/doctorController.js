@@ -2,20 +2,37 @@ const DoctorsRepository = require('../repositories/doctorsRepository');
 
 const { verifyAllParameters } = require('../services/parametersValidationService');
 const { findByField } = require('../services/findByFieldService');
+const { verifyCrm } = require('../services/crmService');
 
 class DoctorController {
   async store(request, response) {
     const {
-      nome,
-      especialidade,
-      crm,
-      telefone,
+      full_name,
       email,
-      passwordDoctor,
+      password_hash,
+      street_address,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
     } = request.body;
-
-    if (verifyAllParameters(nome, especialidade, crm, telefone, email, passwordDoctor)) {
+    if (verifyAllParameters(
+      full_name,
+      street_address,
+      password_hash,
+      email,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
+    )) {
       return response.status(400).json({ error: 'bad request' });
+    }
+
+    if (!verifyCrm(crm)) {
+      return response.status(422).json({ erro: 'Entidade não processável' });
     }
     const emailAlreadyExist = await findByField(
       process.env.DOCTOR_TABLE,
@@ -24,22 +41,24 @@ class DoctorController {
     );
     const crmAlreadyExist = await findByField(
       process.env.DOCTOR_TABLE,
-      process.env.FIELD_EMAIL,
+      process.env.FIELD_CRM,
       crm,
     );
 
-    if (!crmAlreadyExist || !emailAlreadyExist) {
+    if (crmAlreadyExist || emailAlreadyExist) {
       return response.status(409).json({ erro: 'Email ou CRM já existe' });
     }
 
-    const doctor = DoctorsRepository.create({
-      nome,
-      especialidade,
-      crm,
-      telefone,
+    const doctor = await DoctorsRepository.create({
+      full_name,
+      street_address,
+      password_hash,
       email,
-      passwordDoctor,
-      authLevel: 1,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
     });
 
     return response.json(doctor);
