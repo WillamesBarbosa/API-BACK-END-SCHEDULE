@@ -9,6 +9,12 @@ const { findByField } = require('../services/findByFieldService');
 const { verifyCrm } = require('../services/crmService');
 
 class DoctorController {
+  async index(request, response) {
+    const medics = await DoctorsRepository.findAll();
+
+    return response.send(medics);
+  }
+
   async store(request, response) {
     const {
       full_name,
