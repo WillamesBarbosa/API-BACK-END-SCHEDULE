@@ -1,6 +1,15 @@
 const database = require('../../database/index');
 
 class DoctorsRepository {
+  async findAll() {
+    const rows = await database.query(`
+      SELECT *
+      FROM medic
+    `);
+
+    return rows;
+  }
+
   async create({
     full_name,
     email,
