@@ -2,13 +2,17 @@ const database = require('../../database/index');
 
 class FindByField {
   async findByField(table, field, value) {
-    const [row] = await database.query(`
-        SELECT *
-        FROM ${table}
-        WHERE ${field} = $1
-      `, [value]);
+    try {
+      const [row] = await database.query(`
+          SELECT *
+          FROM ${table}
+          WHERE ${field} = $1
+        `, [value]);
 
-    return row;
+      return row;
+    } catch (error) {
+      return console.log('erro no findByFieldRepository', error);
+    }
   }
 }
 
