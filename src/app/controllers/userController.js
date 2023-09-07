@@ -5,7 +5,6 @@ const UsersRepository = require('../repositories/usersRepository');
 
 const { findByField } = require('../services/findByFieldService');
 const { verifyAllParameters } = require('../services/parametersValidationService');
-const { tokenGenerator } = require('../services/tokenService');
 
 class UserController {
   async index(request, response) {
@@ -28,22 +27,6 @@ class UserController {
       }
 
       return response.json(user);
-    } catch (error) {
-      return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
-    }
-  }
-
-  async login(request, response) {
-    try {
-      const { email, password } = request.body;
-
-      const token = await tokenGenerator(email, password);
-
-      if (!token) {
-        return response.status(401).json({ erro: 'Email ou senha incorretos' });
-      }
-
-      return response.json(token);
     } catch (error) {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
