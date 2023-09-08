@@ -7,7 +7,6 @@ const DoctorsRepository = require('../repositories/doctorsRepository');
 const { verifyAllParameters } = require('../services/parametersValidationService');
 const { findByField } = require('../services/findByFieldService');
 const { verifyCrm } = require('../services/crmService');
-const doctorsRepository = require('../repositories/doctorsRepository');
 
 class DoctorController {
   async index(request, response) {
@@ -109,18 +108,6 @@ class DoctorController {
       crm,
       specialization,
     )) {
-      console.log('chegou aq');
-      console.log(verifyAllParameters(
-        full_name,
-        street_address,
-        password,
-        email,
-        city,
-        state_province,
-        mobile_number,
-        crm,
-        specialization,
-      ));
       return response.status(400).json({ error: 'bad request' });
     }
 
@@ -133,7 +120,7 @@ class DoctorController {
     if (!medicExist) {
       return response.status(404).json({ error: 'Usuário não existe' });
     }
-    const medic = await doctorsRepository.update(
+    const medic = await DoctorsRepository.update(
       id,
       {
         full_name,
@@ -149,6 +136,24 @@ class DoctorController {
     );
 
     return response.json(medic);
+  }
+
+  async delete(request, response) {
+    const { id } = request;
+
+    const medicExist = await findByField(
+      process.env.DOCTOR_TABLE,
+      process.env.FIELD_IDENTIFICATION,
+      id,
+    );
+
+    if (!medicExist) {
+      return response.status(404).json({ error: 'usuário não existe' });
+    }
+
+    await DoctorsRepository.delete(id);
+
+    return response.sendStatus(204);
   }
 }
 
