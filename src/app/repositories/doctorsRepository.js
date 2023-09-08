@@ -95,6 +95,15 @@ class DoctorsRepository {
 
     return rows;
   }
+
+  async delete(id) {
+    const dlt = await database.query(`
+    DELETE FROM medic
+    WHERE id = $1
+    `, [id]);
+
+    return dlt;
+  }
 }
 
 module.exports = new DoctorsRepository();
