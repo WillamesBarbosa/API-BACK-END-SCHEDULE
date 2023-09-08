@@ -50,6 +50,51 @@ class DoctorsRepository {
 
     return rows;
   }
+
+  async update(
+    id,
+    {
+      full_name,
+      street_address,
+      password,
+      email,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
+    },
+  ) {
+    const [rows] = await database.query(
+      `
+      UPDATE medic
+      SET full_name = $1,
+      street_address = $2,
+      password_hash = $3,
+      email = $4,
+      city = $5,
+      state_province = $6,
+      mobile_number = $7,
+      crm = $8,
+      specialization = $9
+      WHERE id = $10
+      `,
+      [
+        full_name,
+        street_address,
+        password,
+        email,
+        city,
+        state_province,
+        mobile_number,
+        crm,
+        specialization,
+        id,
+      ],
+    );
+
+    return rows;
+  }
 }
 
 module.exports = new DoctorsRepository();

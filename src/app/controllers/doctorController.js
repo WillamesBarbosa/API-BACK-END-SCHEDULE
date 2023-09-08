@@ -7,6 +7,7 @@ const DoctorsRepository = require('../repositories/doctorsRepository');
 const { verifyAllParameters } = require('../services/parametersValidationService');
 const { findByField } = require('../services/findByFieldService');
 const { verifyCrm } = require('../services/crmService');
+const doctorsRepository = require('../repositories/doctorsRepository');
 
 class DoctorController {
   async index(request, response) {
@@ -81,6 +82,73 @@ class DoctorController {
     });
 
     return response.json(doctor);
+  }
+
+  async update(request, response) {
+    const { id } = request;
+    const {
+      full_name,
+      street_address,
+      password,
+      email,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
+    } = request.body;
+
+    if (verifyAllParameters(
+      full_name,
+      street_address,
+      password,
+      email,
+      city,
+      state_province,
+      mobile_number,
+      crm,
+      specialization,
+    )) {
+      console.log('chegou aq');
+      console.log(verifyAllParameters(
+        full_name,
+        street_address,
+        password,
+        email,
+        city,
+        state_province,
+        mobile_number,
+        crm,
+        specialization,
+      ));
+      return response.status(400).json({ error: 'bad request' });
+    }
+
+    const medicExist = await findByField(
+      process.env.DOCTOR_TABLE,
+      process.env.FIELD_IDENTIFICATION,
+      id,
+    );
+    console.log(medicExist);
+    if (!medicExist) {
+      return response.status(404).json({ error: 'Usuário não existe' });
+    }
+    const medic = await doctorsRepository.update(
+      id,
+      {
+        full_name,
+        street_address,
+        password,
+        email,
+        city,
+        state_province,
+        mobile_number,
+        crm,
+        specialization,
+      },
+    );
+
+    return response.json(medic);
   }
 }
 
