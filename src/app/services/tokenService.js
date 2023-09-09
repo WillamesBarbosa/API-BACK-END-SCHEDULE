@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 async function tokenService(user, password) {
   const passwordAuth = await bcrypt.compare(password, user.password_hash);
@@ -12,7 +13,7 @@ async function tokenService(user, password) {
       authorization_level: user.authorization_level,
     },
     process.env.SECRET,
-    { expiresIn: 120 },
+    { expiresIn: process.env.TOKEN_EXPIRATION },
   );
   return token;
 }
