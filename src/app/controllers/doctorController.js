@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-
 require('dotenv').config();
 
 const DoctorsRepository = require('../repositories/doctorsRepository');
