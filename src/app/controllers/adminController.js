@@ -7,6 +7,12 @@ const { findByField } = require('../services/findByFieldService');
 const { verifyAllParameters } = require('../services/parametersValidationService');
 
 class AdminController {
+  async index(request, response) {
+    const admins = await AdminsRepository.findAll();
+
+    return response.json(admins);
+  }
+
   async store(request, response) {
     const { full_name, email, password } = request.body;
 
