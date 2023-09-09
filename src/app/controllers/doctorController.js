@@ -47,14 +47,17 @@ class DoctorController {
       return response.status(400).json({ error: 'bad request' });
     }
 
-    if (!verifyCrm(crm)) {
+    const crmFormatIsCorrect = verifyCrm(crm);
+    if (!crmFormatIsCorrect) {
       return response.status(422).json({ erro: 'Entidade não processável' });
     }
+
     const emailAlreadyExist = await findByField(
       process.env.DOCTOR_TABLE,
       process.env.FIELD_EMAIL,
       email,
     );
+
     const crmAlreadyExist = await findByField(
       process.env.DOCTOR_TABLE,
       process.env.FIELD_CRM,
