@@ -1,54 +1,20 @@
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
-const { findByField } = require('./findByFieldService');
-
-async function tokenGenerator(email, password) {
-  try {
-    const patient = await findByField(process.env.USER_TABLE, process.env.FIELD_EMAIL, email);
-
-    if (patient) {
-    // return response.status(404).json({ error: 'Email não existe!' });
-      const passwordAuth = await bcrypt.compareSync(password, patient.password_hash);
-      if (!passwordAuth) {
-        return false;
-      }
-      const token = await jwt.sign(
-        {
-          id: patient.id,
-          authorization_level: patient.authorization_level,
-        },
-        process.env.SECRET,
-        { expiresIn: 120 },
-      );
-      return token;
-    }
-
-    const medic = await findByField(process.env.DOCTOR_TABLE, process.env.FIELD_EMAIL, email);
-
-    if (medic) {
-      const passwordAuth = await bcrypt.compareSync(password, medic.password_hash);
-
-      if (!passwordAuth) {
-        return false;
-      }
-      const token = await jwt.sign(
-        {
-          id: medic.id,
-          authorization_level: medic.authorization_level,
-        },
-        process.env.SECRET,
-        { expiresIn: 120 },
-      );
-
-      return token;
-    }
-
+async function tokenService(user, password) {
+  const passwordAuth = await bcrypt.compare(password, user.password_hash);
+  if (!passwordAuth) {
     return false;
-  } catch (error) {
-    return console.log('erro no tokenGenerator');
   }
+  const token = await jwt.sign(
+    {
+      id: user.id,
+      authorization_level: user.authorization_level,
+    },
+    process.env.SECRET,
+    { expiresIn: 120 },
+  );
+  return token;
 }
 
-module.exports = { tokenGenerator };
+module.exports = { tokenService };
