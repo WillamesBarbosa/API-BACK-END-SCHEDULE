@@ -1,11 +1,11 @@
-const { tokenGenerator } = require('../services/tokenService');
+const { loginService } = require('../services/loginService');
 
 class Login {
   async login(request, response) {
     try {
       const { email, password } = request.body;
 
-      const token = await tokenGenerator(email, password);
+      const token = await loginService(email, password);
 
       if (!token) {
         return response.status(401).json({ erro: 'Email ou senha incorretos' });
