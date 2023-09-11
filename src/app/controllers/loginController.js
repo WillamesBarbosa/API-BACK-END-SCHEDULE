@@ -1,4 +1,5 @@
 const { loginService } = require('../services/loginService');
+const logger = require('../logger/winston');
 
 class Login {
   async login(request, response) {
@@ -13,6 +14,7 @@ class Login {
 
       return response.json(token);
     } catch (error) {
+      logger.error('Erro no loginController', error);
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }

@@ -5,6 +5,7 @@ const UsersRepository = require('../repositories/usersRepository');
 
 const { findByField } = require('../services/findByFieldService');
 const { verifyAllParameters } = require('../services/parametersValidationService');
+const logger = require('../logger/winston');
 
 class UserController {
   async index(request, response) {
@@ -13,7 +14,8 @@ class UserController {
 
       return response.json(users);
     } catch (error) {
-      return response.status(500).json('Ocorreu um erro interno no servidor');
+      logger.error('Erro no index UserController', error);
+      return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
 
@@ -28,6 +30,7 @@ class UserController {
 
       return response.json(user);
     } catch (error) {
+      logger.error('Erro no show UserController', error);
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
@@ -68,6 +71,7 @@ class UserController {
 
       return response.status(409).json({ error: 'Email já existe!' });
     } catch (error) {
+      logger.error('Erro no store UserController', error);
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
@@ -110,6 +114,7 @@ class UserController {
 
       return response.json(patient);
     } catch (error) {
+      logger.error('Erro no update UserController', error);
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
@@ -131,6 +136,7 @@ class UserController {
       await UsersRepository.delete(id);
       return response.sendStatus(204);
     } catch (error) {
+      logger.error('Erro no delete UserController', error);
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }

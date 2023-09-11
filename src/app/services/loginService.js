@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const logger = require('../logger/winston');
 const { findByField } = require('./findByFieldService');
 const { tokenService } = require('./tokenService');
 
@@ -30,7 +31,9 @@ async function loginService(email, password) {
 
     return false;
   } catch (error) {
-    return console.log('erro no loginService');
+    logger.error('Erro no loginService', error);
+
+    throw new Error('Houve um erro durante a autenticação');
   }
 }
 

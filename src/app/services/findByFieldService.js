@@ -1,4 +1,5 @@
 const FindByField = require('../repositories/findByFieldsRepository');
+const logger = require('../logger/winston');
 
 async function findByField(table, field, value) {
   try {
@@ -6,7 +7,8 @@ async function findByField(table, field, value) {
 
     return data;
   } catch (error) {
-    return { error: 'Erro interno findByField' };
+    logger.error('Erro no FindByFieldService', error);
+    throw new Error('Ocorreu um erro ao consultar o banco de dados.');
   }
 }
 

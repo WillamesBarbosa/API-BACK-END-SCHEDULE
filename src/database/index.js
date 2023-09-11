@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { Client } = require('pg');
+const logger = require('../app/logger/winston');
 
 let client;
 
@@ -37,6 +38,7 @@ exports.query = async (query, values) => {
 
 
   } catch (error) {
-    console.log('Erro ao conectar com o banco de dados', error);
+    logger.error('Erro ao conectar com o banco de dados.', error)
+    throw new Error('Erro ao conectar com o banco de dados.')
   }
 };
