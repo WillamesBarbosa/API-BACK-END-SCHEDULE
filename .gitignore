@@ -4,3 +4,5 @@ node_modules/
 package-lock.json
 ssl/
 .env
+src/app/logger/logs/combined.log
+src/app/logger/logs/error.log
