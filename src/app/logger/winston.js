@@ -7,8 +7,8 @@ const logger = createLogger({
     format.json(), // Use o formato JSON para facilitar a análise automatizada
   ),
   transports: [
-    new transports.File({ filename: 'error.log', level: 'error' }), // Registre erros em um arquivo separado
-    new transports.File({ filename: 'combined.log' }), // Registre todos os logs em um arquivo combinado
+    new transports.File({ filename: 'logs/error.log', level: 'error' }), // Registre erros em um arquivo separado
+    new transports.File({ filename: 'logs/combined.log' }), // Registre todos os logs em um arquivo combinado
   ],
 });
 
