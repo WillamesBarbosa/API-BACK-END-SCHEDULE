@@ -1,3 +1,5 @@
+const validator = require('validator');
+
 const { loginService } = require('../services/loginService');
 const logger = require('../logger/winston');
 
@@ -5,6 +7,10 @@ class Login {
   async login(request, response) {
     try {
       const { email, password } = request.body;
+
+      if (!validator.isEmail(email)) {
+        return response.status(400).json({ error: 'Bad request' });
+      }
 
       const token = await loginService(email, password);
 

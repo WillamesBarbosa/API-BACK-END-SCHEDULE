@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 require('dotenv').config();
 
 const UsersRepository = require('../repositories/usersRepository');
@@ -53,6 +54,10 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      if (!validator.isEmail(email)) {
+        return response.status(400).json({ error: 'Bad request' });
+      }
+
       const emailAlreadyExists = await findByField(
         process.env.USER_TABLE,
         process.env.FIELD_EMAIL,
@@ -93,6 +98,10 @@ class UserController {
         mobile_number,
       )) {
         return response.status(400).json({ error: 'bad request' });
+      }
+
+      if (!validator.isEmail(email)) {
+        return response.status(400).json({ error: 'Bad request' });
       }
 
       const userExist = await findByField(

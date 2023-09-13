@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 require('dotenv').config();
 
 const DoctorsRepository = require('../repositories/doctorsRepository');
@@ -60,6 +61,10 @@ class DoctorController {
         crm,
         specialization,
       )) {
+        return response.status(400).json({ error: 'bad request' });
+      }
+
+      if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'bad request' });
       }
 
@@ -134,12 +139,16 @@ class DoctorController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      if (!validator.isEmail(email)) {
+        return response.status(400).json({ error: 'Bad request' });
+      }
+
       const medicExist = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_IDENTIFICATION,
         id,
       );
-      console.log(medicExist);
+
       if (!medicExist) {
         return response.status(404).json({ error: 'Usuário não existe' });
       }
