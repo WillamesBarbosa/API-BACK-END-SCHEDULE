@@ -7,9 +7,9 @@ const { authenticationService } = require('../app/services/authenticationService
 async function authenticationMiddleware(request, response, next) {
   const token = request.headers.authorization;
   try {
-    const decode = await authenticationService(token, process.env.SECRET);
+    const decode = await authenticationService(token);
     if (!decode) {
-      return response.status(401).json('Usuário não autenticado!');
+      return response.status(401).json({Error: 'Usuário não autenticado!'});
     }
 
     request.id = decode.id;

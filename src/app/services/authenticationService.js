@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const logger = require('../logger/winston');
 require('dotenv').config();
 
-async function authenticationService(token, SECRET) {
+async function authenticationService(token) {
   try {
-    const decode = await jwt.verify(token, SECRET);
+    const decode = token ? await jwt.verify(token, process.env.SECRET) : false;
 
     return decode;
   } catch (error) {
