@@ -24,8 +24,13 @@ app.use(express.json());
 // check if the json strutucture is correct
 app.use(checkIntegrityOfJSON);
 
+const corsOptions = {
+  credentials: true,
+  origin: 'https://localhost:3000',
+};
+
 // For minimize erros about cors
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(routes);
 // Middleware so that errors can respond to the client in case of errors
 app.use((error, request, response, next) => {
