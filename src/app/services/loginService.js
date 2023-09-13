@@ -23,6 +23,7 @@ async function loginService(email, password) {
     }
 
     const admin = await findByField(process.env.ADMIN_TABLE, process.env.FIELD_EMAIL, email);
+
     if (admin) {
       const token = await tokenService(admin, password);
 

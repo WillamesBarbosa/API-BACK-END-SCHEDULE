@@ -9,13 +9,14 @@ async function tokenService(user, password) {
     if (!passwordAuth) {
       return false;
     }
+    const tokenExpiration = parseInt(process.env.TOKEN_EXPIRATION, 10);
     const token = await jwt.sign(
       {
         id: user.id,
         authorization_level: user.authorization_level,
       },
       process.env.SECRET,
-      { expiresIn: process.env.TOKEN_EXPIRATION },
+      { expiresIn: tokenExpiration },
     );
     return token;
   } catch (error) {
