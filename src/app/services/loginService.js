@@ -4,6 +4,7 @@ const logger = require('../logger/winston');
 const { findByField } = require('./findByFieldService');
 const { tokenService } = require('./tokenService');
 
+// Função que verifica se existe um usuário com o email fornecido
 async function loginService(email, password) {
   try {
     const patient = await findByField(process.env.USER_TABLE, process.env.FIELD_EMAIL, email);

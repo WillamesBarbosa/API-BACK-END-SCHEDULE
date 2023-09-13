@@ -1,5 +1,6 @@
 const logger = require('../app/logger/winston');
 
+// Função que trata o erro em caso de request com formato JSON inválido
 /* eslint-disable */
 function checkIntegrityOfJSON(erro, request, response, next) {
   try {

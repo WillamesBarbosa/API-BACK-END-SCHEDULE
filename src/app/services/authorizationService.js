@@ -1,5 +1,6 @@
 const logger = require('../logger/winston');
 
+// Função que compara o nível de autorização necessário com o nível de autorização recebido
 function authorizationService(authorization_level, level_acess) {
   try {
     const authorization = parseInt(authorization_level, 10);

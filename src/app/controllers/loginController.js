@@ -4,14 +4,17 @@ const { loginService } = require('../services/loginService');
 const logger = require('../logger/winston');
 
 class Login {
+  // Função que trata o login
   async login(request, response) {
     try {
       const { email, password } = request.body;
 
+      // Verifica se a estrutura do email é válida
       if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'Bad request' });
       }
 
+      // Função que retorna o token JWT
       const token = await loginService(email, password);
 
       if (!token) {

@@ -29,7 +29,6 @@ class AdminController {
 
       // Verifica se existe algum parâmetro undefined
       if (verifyAllParameters(full_name, email, password)) {
-        console.log(full_name, email, password);
         return response.status(400).json({ error: 'Bad request' });
       }
 

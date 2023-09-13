@@ -10,6 +10,7 @@ const { verifyCrm } = require('../services/crmService');
 const logger = require('../logger/winston');
 
 class DoctorController {
+  // Função que retorna todos os Doctors
   async index(request, response) {
     try {
       const medics = await DoctorsRepository.findAll();
@@ -21,9 +22,12 @@ class DoctorController {
     }
   }
 
+  // Função que retorna apenas o Doctor autenticado
   async show(request, response) {
     try {
       const { id } = request;
+
+      // Verifica se o id existe na tabela Doctor e retorna ele caso exista
       const medic = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_IDENTIFICATION,
@@ -37,6 +41,7 @@ class DoctorController {
     }
   }
 
+  // Função que cria um novo Doctor
   async store(request, response) {
     try {
       const {
@@ -50,6 +55,8 @@ class DoctorController {
         crm,
         specialization,
       } = request.body;
+
+      // Verifica se existe algum parâmetro undefined
       if (verifyAllParameters(
         full_name,
         street_address,
@@ -64,21 +71,25 @@ class DoctorController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      // Verifica se a estrutura do email é válida
       if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      // Verifica se a estrutura do CRM é válida
       const crmFormatIsCorrect = verifyCrm(crm);
       if (!crmFormatIsCorrect) {
         return response.status(422).json({ erro: 'Entidade não processável' });
       }
 
+      // Verifica se o email existe
       const emailAlreadyExist = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_EMAIL,
         email,
       );
 
+      // Verifica se o CRM existe
       const crmAlreadyExist = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_CRM,
@@ -89,6 +100,7 @@ class DoctorController {
         return response.status(409).json({ erro: 'Email ou CRM já existe' });
       }
 
+      // Cria o hash do password
       const password_hash = await bcrypt.hash(password, 15);
 
       const doctor = await DoctorsRepository.create({
@@ -110,6 +122,7 @@ class DoctorController {
     }
   }
 
+  // Função que atualiza os dados do Doctor
   async update(request, response) {
     try {
       const { id } = request;
@@ -125,6 +138,7 @@ class DoctorController {
         specialization,
       } = request.body;
 
+      // Verifica se existe algum parâmetro undefined
       if (verifyAllParameters(
         full_name,
         street_address,
@@ -139,10 +153,12 @@ class DoctorController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      // Verifica se a estrutura do email é válida
       if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'Bad request' });
       }
 
+      // Verifica se o id existe no banco de dados
       const medicExist = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_IDENTIFICATION,
@@ -152,6 +168,7 @@ class DoctorController {
       if (!medicExist) {
         return response.status(404).json({ error: 'Usuário não existe' });
       }
+
       const medic = await DoctorsRepository.update(
         id,
         {
@@ -174,10 +191,12 @@ class DoctorController {
     }
   }
 
+  // Função que apaga o Doctor logado
   async delete(request, response) {
     try {
       const { id } = request;
 
+      // Verifica se o id realmente existe na tabela
       const medicExist = await findByField(
         process.env.DOCTOR_TABLE,
         process.env.FIELD_IDENTIFICATION,

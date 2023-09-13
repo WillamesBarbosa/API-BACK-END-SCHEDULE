@@ -1,6 +1,7 @@
 const FindByField = require('../repositories/findByFieldsRepository');
 const logger = require('../logger/winston');
 
+// Função que verifica se existe um parametro fornecido no banco de dados, se existir retorna ele
 async function findByField(table, field, value) {
   try {
     const data = await FindByField.findByField(table, field, value);

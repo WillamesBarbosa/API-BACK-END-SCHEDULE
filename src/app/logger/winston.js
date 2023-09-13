@@ -5,7 +5,7 @@ const logger = createLogger({
   level: 'info', // Nível mínimo de log para produção (por exemplo, 'info' ou 'error')
   format: format.combine(
     format.timestamp(),
-    format.json(), // Use o formato JSON para facilitar a análise automatizada
+    format.json(), // Definindo o formato JSON para facilitar a análise automatizada
   ),
   transports: [
     new transports.File({ filename: 'logs/error.log', level: 'error' }), // Registra erros em um arquivo separado

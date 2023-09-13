@@ -9,6 +9,7 @@ const { verifyAllParameters } = require('../services/parametersValidationService
 const logger = require('../logger/winston');
 
 class UserController {
+  // Função que retorna todas os paciente
   async index(request, response) {
     try {
       const users = await UsersRepository.findAll();
@@ -20,9 +21,11 @@ class UserController {
     }
   }
 
+  // Função que retorna o paciente autenticado
   async show(request, response) {
     try {
       const { id } = request;
+      // Verifica se o id existe e retorna o paciente, caso exista
       const user = await findByField(process.env.USER_TABLE, process.env.FIELD_IDENTIFICATION, id);
 
       if (!user) {
@@ -36,12 +39,14 @@ class UserController {
     }
   }
 
+  // Função que cria um novo paciente
   async store(request, response) {
     try {
       const {
         full_name, email, password, street_address, city, state_province, mobile_number,
       } = request.body;
 
+      // Verifica se existe algum parâmetro undefined
       if (verifyAllParameters(
         full_name,
         email,
@@ -54,16 +59,19 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      // Verifica se a estrutura do email é válida
       if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'Bad request' });
       }
 
+      // Verifica se o email já existe na tabela
       const emailAlreadyExists = await findByField(
         process.env.USER_TABLE,
         process.env.FIELD_EMAIL,
         email,
       );
 
+      // Retorna o hash do password
       const password_hash = await bcrypt.hash(password, 15);
 
       if (!emailAlreadyExists) {
@@ -81,6 +89,7 @@ class UserController {
     }
   }
 
+  // Função que atualiza os dados de um paciente
   async update(request, response) {
     try {
       const {
@@ -88,6 +97,7 @@ class UserController {
       } = request.body;
       const { id } = request;
 
+      // Verifica se existe algum parâmetro undefined
       if (verifyAllParameters(
         full_name,
         email,
@@ -100,10 +110,12 @@ class UserController {
         return response.status(400).json({ error: 'bad request' });
       }
 
+      // Verifica se a estrutura do email é válida
       if (!validator.isEmail(email)) {
         return response.status(400).json({ error: 'Bad request' });
       }
 
+      // Verifica se o email já existe na tabela
       const userExist = await findByField(
         process.env.USER_TABLE,
         process.env.FIELD_IDENTIFICATION,
@@ -128,6 +140,7 @@ class UserController {
     }
   }
 
+  // Função que apaga um paciente
   async delete(request, response) {
     try {
       const { id } = request;
