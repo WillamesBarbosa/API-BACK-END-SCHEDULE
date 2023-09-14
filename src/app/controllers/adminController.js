@@ -22,6 +22,25 @@ class AdminController {
     }
   }
 
+  // Função que retorna o Admin autenticado
+  async show(request, response) {
+    const { id } = request;
+
+    try {
+      // Verifica se o id existe na tabela e retorna o admin caso exista
+      const admin = await findByField(
+        process.env.ADMIN_TABLE,
+        process.env.FIELD_IDENTIFICATION,
+        id,
+      );
+
+      return response.json(admin);
+    } catch (error) {
+      logger.error('Erro no show AdminController', error);
+      return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
+    }
+  }
+
   // Função para criar um novo Admin
   async store(request, response) {
     try {
