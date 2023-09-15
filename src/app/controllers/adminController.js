@@ -114,6 +114,30 @@ class AdminController {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
+
+  async delete(request, response) {
+    const { id } = request;
+
+    try {
+      // Verifica se existe um admin com o id fornecido
+      const adminExist = await findByField(
+        process.env.ADMIN_TABLE,
+        process.env.FIELD_IDENTIFICATION,
+        id,
+      );
+
+      if (!adminExist) {
+        response.status(404).json({ Error: 'Usuário não existe' });
+      }
+
+      await AdminsRepository.delete(id);
+
+      return response.sendStatus(200);
+    } catch (error) {
+      logger.error('Erro no AdminController delete', error);
+      return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
+    }
+  }
 }
 
 module.exports = new AdminController();
