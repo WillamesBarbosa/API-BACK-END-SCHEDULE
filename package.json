@@ -7,6 +7,7 @@
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.1",
+    "luxon": "^3.4.3",
     "pg": "^8.11.3",
     "validator": "^13.11.0",
     "winston": "^3.10.0"
