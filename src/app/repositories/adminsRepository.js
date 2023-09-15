@@ -47,6 +47,18 @@ class AdminsRepository {
 
     return rows;
   }
+
+  async delete(id) {
+    const dlt = await database.query(
+      `
+    DELETE FROM admin
+    WHERE id = $1
+    `,
+      [id],
+    );
+
+    return dlt;
+  }
 }
 
 module.exports = new AdminsRepository();
