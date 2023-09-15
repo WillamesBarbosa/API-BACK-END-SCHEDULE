@@ -78,6 +78,43 @@ class AdminController {
       return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
     }
   }
+
+  async update(request, response) {
+    const { id } = request;
+    const { full_name, email, password } = request.body;
+
+    try {
+      // verifica se existe algum parâmetro undefined
+      if (verifyAllParameters(full_name, email, password)) {
+        console.log('foi aqui');
+        return response.status(400).json({ error: 'Bad request' });
+      }
+
+      // Verifica se a estrutura do email é valida
+      if (!validator.isEmail(email)) {
+        console.log('aqui');
+        return response.status(400).json({ Error: 'Bad Request' });
+      }
+
+      // Verifica se existe um admin com o id fornecido
+      const adminExist = await findByField(
+        process.env.ADMIN_TABLE,
+        process.env.FIELD_IDENTIFICATION,
+        id,
+      );
+      if (!adminExist) {
+        return response.status(404).json({ error: 'Usuário não existe' });
+      }
+
+      const admin = await AdminsRepository.update({ full_name, email, password }, id);
+      console.log(admin);
+
+      return response.json(admin);
+    } catch (error) {
+      logger.error('Erro no update AdminController', error);
+      return response.status(500).json({ Error: 'Ocorreu um erro interno no servidor' });
+    }
+  }
 }
 
 module.exports = new AdminController();
