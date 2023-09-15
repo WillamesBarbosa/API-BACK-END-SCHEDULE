@@ -44,7 +44,7 @@ class AdminsRepository {
         id,
       ],
     );
-    console.log(rows);
+
     return rows;
   }
 }

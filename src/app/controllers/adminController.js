@@ -107,7 +107,6 @@ class AdminController {
       }
 
       const admin = await AdminsRepository.update({ full_name, email, password }, id);
-      console.log(admin);
 
       return response.json(admin);
     } catch (error) {
