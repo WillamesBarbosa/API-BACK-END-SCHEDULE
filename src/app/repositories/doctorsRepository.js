@@ -78,6 +78,7 @@ class DoctorsRepository {
       crm = $8,
       specialization = $9
       WHERE id = $10
+      RETURNING *
       `,
       [
         full_name,
