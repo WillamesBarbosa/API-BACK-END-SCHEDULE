@@ -18,6 +18,7 @@ const logger = createLogger({
   transports: [
     new transports.File({ filename: 'logs/error.log', level: 'error' }), // Registra erros em um arquivo separado
     new transports.File({ filename: 'logs/combined.log' }), // Registra todos os logs em um arquivo combinado
+    new transports.File({ filename: 'logs/user_actions.log', level: 'info' }), // Registra ações de usuário em um arquivo separado
   ],
 });
 
